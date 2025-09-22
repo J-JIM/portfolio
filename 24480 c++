@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define MAX 100001
+
+using namespace std;
+int N, M, R;
+int visited[MAX];
+int cnt = 1;
+vector<int> v[MAX];
+
+void dfs(int r){
+    visited[r] = cnt;
+
+    for(int i =0 ; i <v[r].size();i++){
+        int next = v[r][i];
+        if(!visited[next]){
+            cnt++;
+            dfs(next); //다음 부분 재귀호출
+        }
+    }
+}
+
+int main(){
+    cin >> N >> M >> R;
+    for(int i = 0 ; i < M; i++){
+        int u, j;
+        cin >> u >> j;
+        v[u].push_back(j);
+        v[j].push_back(u);
+    }
+
+    for(int i = 1; i <= N; i++){//내림차순 정렬
+        sort(v[i].begin(), v[i].end(), greater<int>());
+    }
+    dfs(R);
+    for(int i = 1; i <= N; i++){
+        cout << visited[i] << '\n';
+    }
+}
